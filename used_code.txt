@@ -1,0 +1,97 @@
+### App  
+
+	Ø OnStart: 
+
+	Set(YourHand, "Rock");
+	Set(OpponentHand, First(Shuffle(["Rock"])));
+	Set(GameCount, 0);
+	
+	//Nice to have
+	Set(WinCounts,0);
+	Set(DrawCounts, 0);
+	Set(LoseCounts,0);
+
+	
+### StartScreen
+
+	Ø Background Image
+	- Image set to tile
+
+	Ø Insert Images
+		○ Title
+		○ Big RockLeft (400x320px)
+			§ Image:
+			If(
+			 YourHand = "Rock", rockLeft, 
+			 YourHand = "Paper", paperLeft,
+			 YourHand = "Scissors", scissorsLeft)
+			
+		○ Big RockRight (400x320px)
+			§ Image:
+			
+			If(
+			    OpponentHand.Value = "Rock", rockRight,
+			    OpponentHand.Value = "Paper", paperRight,
+			    OpponentHand.Value = "Scissors", scissorsRight
+			)
+			
+			
+		
+	Ø Label: You 
+		○ Bold or SemiBold
+		○ Font: Patrick Hand
+		○ Size: 32
+		○ Center
+	Ø Label: Opponent
+		○ Bold or SemiBold
+		○ Font: Patrick Hand
+		○ Size: 32
+		○ Center
+	Ø Label : Choose your hand
+		○ Bold or SemiBold
+		○ Font: Patrick Hand
+		○ Size: 32
+		○ Center
+	Ø Under image: Choose your hand
+		○ RockLeft
+		○ PaperLeft
+		○ ScissorsLeft
+
+	Ø OnSelect RockLeft on all images: 
+-  Set(YourHand, "Rock")   
+-  Set(YourHand, "Paper")
+-  Set(YourHand, "Scissors");
+	Set(OpponentHand, First(Shuffle(["Rock", "Paper", "Scissors"])));
+Set(GameCount, GameCount+1);
+	
+	Ø Image YouWin
+	If(
+	    YourHand = "Rock" && OpponentHand.Value = "Rock", DrawGame,
+	    YourHand = "Rock" && OpponentHand.Value = "Paper", YouLose,
+	    YourHand = "Rock" && OpponentHand.Value = "Scissors", YouWin,
+	    YourHand = "Paper" && OpponentHand.Value = "Rock", YouWin,
+	    YourHand = "Paper" && OpponentHand.Value = "Paper", DrawGame,
+	    YourHand = "Paper" && OpponentHand.Value = "Scissors", YouLose,
+	    YourHand = "Scissors" && OpponentHand.Value = "Rock", YouLose,
+	    YourHand = "Scissors" && OpponentHand.Value = "Paper", YouWin,
+	    YourHand = "Scissors" && OpponentHand.Value = "Scissors", DrawGame
+	)
+	
+	Visible: If(GameCount = 0, false, true)
+
+
+//Nice to have
+
+	Ø Label to set counts: 
+		If(
+		    ((YourHand = "Rock" && OpponentHand.Value = "Rock") || (YourHand = "Paper" && OpponentHand.Value = "Paper") || (YourHand = "Scissors" && OpponentHand.Value = "Scissors")), Set(DrawCount, DrawCount + 1),
+		        ((YourHand = "Rock" && OpponentHand.Value = "Scissors") || (YourHand = "Paper" && OpponentHand.Value = "Rock") || (YourHand = "Scissors" && OpponentHand.Value = "Paper")), Set(WinCount, WinCount + 1),
+		        ((YourHand = "Rock" && OpponentHand.Value = "Paper") || (YourHand = "Paper" && OpponentHand.Value = "Scissors") || (YourHand = "Scissors" && OpponentHand.Value = "Rock")), Set(LoseCount, LoseCount + 1)
+		)
+		○ Visible: false
+	
+	Ø Label: "Win: " & WinCounts & " Draw: " & DrawCounts & " Lose: " & LoseCounts
+		○ Font: Patrick Hand
+		○ Fontsize: 32
+		○ Align: Center
+Bold or semi-bold
